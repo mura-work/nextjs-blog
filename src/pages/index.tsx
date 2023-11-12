@@ -1,9 +1,9 @@
 import Head from "next/head";
-import Layout, { siteTitle } from "../components/layout";
+import { Layout, siteTitle } from "../components/layout.tsx";
 import utilStyles from "../styles/utils.module.css";
-import { getSortedPostsData } from "../lib/posts";
+import { getSortedPostsData } from "../lib/posts.ts";
 import Link from "next/link";
-import Date from "../components/date";
+import { Date } from "../components/date.tsx";
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -14,9 +14,15 @@ export async function getStaticProps() {
   };
 }
 
-export default function Home({ allPostsData }) {
+type PostType = {
+  id: string;
+  title: string;
+  date: string;
+};
+
+export default function Home({ allPostsData }: { allPostsData: PostType[] }) {
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{siteTitle}</title>
       </Head>
