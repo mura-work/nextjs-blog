@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Date } from "../../components/date.tsx";
 import utilStyles from "../../styles/utils.module.css";
 import { GetStaticProps, GetStaticPaths } from "next";
+import { Button } from "@chakra-ui/react";
 
 type Post = {
   title: string;
