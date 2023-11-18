@@ -5,7 +5,6 @@ import utilStyles from "../styles/utils.module.css";
 import { getSortedPostsData } from "../lib/posts.ts";
 import Link from "next/link";
 import { Date } from "../components/date.tsx";
-import { db } from "lib/prisma.ts";
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();

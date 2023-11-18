@@ -5,13 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const todoLists = await db.todo.findMany({
+  const categories = await db.category.findMany({
     include: {
-      categories: true,
+      todoLists: true,
     },
     orderBy: {
       createdAt: "desc",
     },
   });
-  res.status(200).json({ todoLists });
+  res.status(200).json({ categories });
 }
