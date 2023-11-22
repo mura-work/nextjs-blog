@@ -7,11 +7,12 @@ import {
   Checkbox,
   Badge,
   Input,
-	Button,
+  Button,
 } from "@chakra-ui/react";
-import categories from "pages/api/categories";
 import { useState, useEffect } from "react";
 import { CategoryType } from "types";
+import { useRecoilValue } from "recoil";
+import { categoriesState } from "state/TodoState";
 
 export type TodoFormType = {
   id?: number;
@@ -23,12 +24,8 @@ export type TodoFormType = {
   categories: CategoryType[];
 };
 
-type PropsType = {
-  categories: CategoryType[];
-};
-
-export const TodoForm = (props: PropsType) => {
-  const { categories } = props;
+export const TodoForm = () => {
+  const categories = useRecoilValue(categoriesState);
   const [todoForm, setTodoForm] = useState<TodoFormType>({
     title: "",
     content: "",
@@ -131,9 +128,9 @@ export const TodoForm = (props: PropsType) => {
         />
         <FormErrorMessage>担当者が入力されていません。</FormErrorMessage>
       </FormControl>
-			<FormControl>
-				<Button>投稿</Button>
-			</FormControl>
+      <FormControl>
+        <Button>投稿</Button>
+      </FormControl>
     </div>
   );
 };
