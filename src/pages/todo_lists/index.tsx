@@ -3,11 +3,13 @@ import { TodoType, CategoryType } from "types";
 import { HeaderComponent } from "components/header";
 import { SidebarComponent } from "components/sidebar";
 import { TodoListDetail } from "components/TodoLists/TodoListDetail";
+import { TodoForm } from "components/TodoLists/TodoForm";
 
 export default function TodoListIndex() {
   const [todoLists, setTodoLists] = useState<TodoType[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [showingTodoList, setShowingTodoList] = useState<TodoType>();
+  const [isNewTodo, setNewTodo] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTodoLists();
@@ -26,15 +28,25 @@ export default function TodoListIndex() {
     console.log(res);
     setCategories(res.categories);
   };
+
+  const MainContent = () => {
+    if (isNewTodo) {
+      return <TodoForm categories={categories} />;
+    } else if (showingTodoList) {
+      return <TodoListDetail todoList={showingTodoList} />;
+    } else {
+      return <></>;
+    }
+  };
   return (
     <div>
-      <HeaderComponent />
+      <HeaderComponent openNewTodo={() => setNewTodo(true)} />
       <div className="flex">
         <SidebarComponent
           categories={categories}
           showTodoList={(todo) => setShowingTodoList(todo)}
         />
-        <TodoListDetail todoList={showingTodoList} />
+        <MainContent />
       </div>
     </div>
   );
