@@ -21,10 +21,14 @@ export type TodoFormType = {
   completedDate: string;
   responsibleUserName?: string;
   isDone: boolean;
-  categories: CategoryType[];
+  categoryIds: number[];
 };
 
-export const TodoForm = () => {
+type PropsType = {
+  createTodo: (formValue: TodoFormType) => void;
+};
+
+export const TodoForm = (props: PropsType) => {
   const categories = useRecoilValue(categoriesState);
   const [todoForm, setTodoForm] = useState<TodoFormType>({
     title: "",
@@ -32,7 +36,7 @@ export const TodoForm = () => {
     completedDate: new Date().toDateString(),
     responsibleUserName: "",
     isDone: false,
-    categories: [],
+    categoryIds: [],
   });
   const [todoFormError, setTodoFormError] = useState<{
     [K in keyof TodoFormType]: boolean;
@@ -42,8 +46,30 @@ export const TodoForm = () => {
     completedDate: false,
     responsibleUserName: false,
     isDone: false,
-    categories: false,
+    categoryIds: false,
   });
+
+  const updateCategories = (categoryId: number) => {
+    if (todoForm.categoryIds.includes(categoryId)) {
+      setTodoForm((prev) => ({
+        ...prev,
+        categoryIds: prev.categoryIds.filter((id) => id !== categoryId),
+      }));
+    } else {
+      setTodoForm((prev) => ({
+        ...prev,
+        categoryIds: [...prev.categoryIds, categoryId],
+      }));
+    }
+  };
+
+  const submitTodo = () => {
+    if (Object.values(todoFormError).some((e) => !!e)) {
+      console.log("エラーがあります。");
+      return;
+    }
+    props.createTodo(todoForm);
+  };
 
   return (
     <div className="ml-8">
@@ -80,10 +106,11 @@ export const TodoForm = () => {
             return (
               <Checkbox
                 key={category.id}
-                isChecked={todoForm.categories.some(
-                  (c) => c.id === category.id
+                isChecked={todoForm.categoryIds.some(
+                  (categoryId) => categoryId === category.id
                 )}
                 className="mr-2 my-2"
+                onChange={() => updateCategories(category.id)}
               >
                 <Badge
                   key={category.id}
@@ -129,7 +156,7 @@ export const TodoForm = () => {
         <FormErrorMessage>担当者が入力されていません。</FormErrorMessage>
       </FormControl>
       <FormControl>
-        <Button>投稿</Button>
+        <Button onClick={() => submitTodo()}>投稿</Button>
       </FormControl>
     </div>
   );

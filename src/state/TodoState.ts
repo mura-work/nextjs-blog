@@ -9,7 +9,7 @@ import { CategoryType } from "types";
 //   }),
 // });
 
-export const categoriesState = atom({
+export const categoriesState = atom<CategoryType[]>({
   key: "categoryState",
   default: [],
 });
