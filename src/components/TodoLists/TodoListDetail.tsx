@@ -9,7 +9,7 @@ export const TodoListDetail = (props: PropsType) => {
   const { todoList } = props;
 
   if (!todoList) return <></>;
-	console.log(todoList)
+
   return (
     <div>
       <div className="flex">
@@ -33,7 +33,7 @@ export const TodoListDetail = (props: PropsType) => {
       <div>
         {todoList.categories?.map((category) => {
           return (
-            <Tag key={category.id} colorScheme={category.color}>
+            <Tag className="mr-1" key={category.id} colorScheme={category.color}>
               {category.name}
             </Tag>
           );

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -8,6 +7,8 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { CategoryType, TodoType } from "types";
+import { useRecoilValue } from "recoil";
+import { categoriesState } from "state/TodoState";
 
 type PropsType = {
   categories: CategoryType[];
@@ -15,11 +16,7 @@ type PropsType = {
 };
 
 export const SidebarComponent = (props: PropsType) => {
-  const [categoriesData, setCategoriesData] = useState<CategoryType[]>([]);
-
-  useEffect(() => {
-    setCategoriesData(props.categories);
-  }, [props.categories]);
+  const categoriesData = useRecoilValue(categoriesState);
 
   return (
     <div className="max-w-xs">
