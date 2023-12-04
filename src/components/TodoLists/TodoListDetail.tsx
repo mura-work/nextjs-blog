@@ -3,10 +3,11 @@ import { TodoType } from "types";
 
 type PropsType = {
   todoList: TodoType | undefined;
+  openEditTodo: (todoType: TodoType) => void;
 };
 
 export const TodoListDetail = (props: PropsType) => {
-  const { todoList } = props;
+  const { todoList, openEditTodo } = props;
 
   if (!todoList) return <></>;
 
@@ -33,14 +34,20 @@ export const TodoListDetail = (props: PropsType) => {
       <div>
         {todoList.categories?.map((category) => {
           return (
-            <Tag className="mr-1" key={category.id} colorScheme={category.color}>
+            <Tag
+              className="mr-1"
+              key={category.id}
+              colorScheme={category.color}
+            >
               {category.name}
             </Tag>
           );
         })}
       </div>
       <div className="mt-4">
-        <Button colorScheme="green">編集</Button>
+        <Button colorScheme="green" onClick={() => openEditTodo(todoList)}>
+          編集
+        </Button>
         {todoList.isDone === false && (
           <Button className="ml-4" colorScheme="blue">
             完了に変更

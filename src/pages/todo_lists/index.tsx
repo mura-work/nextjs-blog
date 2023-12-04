@@ -61,11 +61,18 @@ export default function TodoListIndex() {
     setNewTodo(false);
   };
 
+  const openEditTodo = (editingTodo: TodoType) => {};
+
   const MainContent = () => {
     if (isNewTodo) {
       return <TodoForm createTodo={createTodo} />;
     } else if (showingTodoList) {
-      return <TodoListDetail todoList={showingTodoList} />;
+      return (
+        <TodoListDetail
+          todoList={showingTodoList}
+          openEditTodo={(editingTodo) => openEditTodo(editingTodo)}
+        />
+      );
     } else {
       return <></>;
     }
