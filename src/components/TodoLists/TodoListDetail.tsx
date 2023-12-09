@@ -3,11 +3,12 @@ import { TodoType } from "types";
 
 type PropsType = {
   todoList: TodoType | undefined;
-  openEditTodo: (todoType: TodoType) => void;
+  openEditTodo: (todo: TodoType) => void;
+  deleteTodo: (todo: TodoType) => void;
 };
 
 export const TodoListDetail = (props: PropsType) => {
-  const { todoList, openEditTodo } = props;
+  const { todoList, openEditTodo, deleteTodo } = props;
 
   if (!todoList) return <></>;
 
@@ -53,7 +54,7 @@ export const TodoListDetail = (props: PropsType) => {
             完了に変更
           </Button>
         )}
-        <Button className="ml-4" colorScheme="red">
+        <Button className="ml-4" colorScheme="red" onClick={() => deleteTodo(todoList)}>
           削除
         </Button>
       </div>
