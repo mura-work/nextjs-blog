@@ -10,7 +10,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { CategoryType } from "types";
+import { CategoryType, TodoType } from "types";
 import { useRecoilValue } from "recoil";
 import { categoriesState } from "state/TodoState";
 
@@ -26,17 +26,22 @@ export type TodoFormType = {
 
 type PropsType = {
   createTodo: (formValue: TodoFormType) => void;
+  updateTodo: (formValue: TodoFormType, id: number) => void;
+  editingTodo: TodoType | undefined;
 };
 
 export const TodoForm = (props: PropsType) => {
   const categories = useRecoilValue(categoriesState);
+  const { editingTodo } = props;
   const [todoForm, setTodoForm] = useState<TodoFormType>({
-    title: "",
-    content: "",
-    completedDate: new Date().toDateString(),
-    responsibleUserName: "",
-    isDone: false,
-    categoryIds: [],
+    title: editingTodo?.title ?? "",
+    content: editingTodo?.content ?? "",
+    completedDate: editingTodo?.completedDate
+      ? String(editingTodo?.completedDate)
+      : new Date().toDateString(),
+    responsibleUserName: editingTodo?.responsibleUserName ?? "",
+    isDone: editingTodo?.isDone ?? false,
+    categoryIds: editingTodo?.categories?.map((c) => c.id) ?? [],
   });
   const [todoFormError, setTodoFormError] = useState<{
     [K in keyof TodoFormType]: boolean;
@@ -68,7 +73,11 @@ export const TodoForm = (props: PropsType) => {
       console.log("エラーがあります。");
       return;
     }
-    props.createTodo(todoForm);
+    if (editingTodo) {
+      props.updateTodo(todoForm, editingTodo.id);
+    } else {
+      props.createTodo(todoForm);
+    }
   };
 
   return (

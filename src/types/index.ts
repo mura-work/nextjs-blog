@@ -14,7 +14,7 @@ export type TodoType = {
   createdAt: Date;
   updatedAt: Date;
   title: string;
-  content?: String;
+  content?: string;
   completedDate: Date;
   responsibleUserName?: string;
   isDone: boolean;
