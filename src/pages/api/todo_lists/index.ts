@@ -33,6 +33,27 @@ export default async function handler(
       },
     });
     res.status(200).json(newTodo);
+  } else if (req.method === "PATCH") {
+    const params = JSON.parse(req.body);
+    const newTodo = await db.todo.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        title: params.title,
+        content: params.content,
+        completedDate: params.completedDate,
+        responsibleUserName: params.responsibleUserName,
+        isDone: params.isDone,
+        categories: {
+          connect: params.categories.map((c: number) => ({ id: c })),
+        },
+      },
+      include: {
+        categories: true,
+      },
+    });
+    res.status(200).json(newTodo);
   } else if (req.method === "DELETE") {
     const params = JSON.parse(req.body);
     await db.todo.delete({
