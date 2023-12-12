@@ -5,14 +5,15 @@ import { SidebarComponent } from "components/sidebar";
 import { TodoListDetail } from "components/TodoLists/TodoListDetail";
 import { TodoForm, TodoFormType } from "components/TodoLists/TodoForm";
 import { categoriesState } from "state/TodoState";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 export default function TodoListIndex() {
   const [todoLists, setTodoLists] = useState<TodoType[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [showingTodoList, setShowingTodoList] = useState<TodoType>();
   const [isNewTodo, setNewTodo] = useState<boolean>(false);
-  const setCategoriesList = useSetRecoilState<CategoryType[]>(categoriesState);
+  const [categoryList, setCategoriesList] =
+    useRecoilState<CategoryType[]>(categoriesState);
 
   useEffect(() => {
     fetchTodoLists();
@@ -63,6 +64,24 @@ export default function TodoListIndex() {
 
   const openEditTodo = (editingTodo: TodoType) => {};
 
+  const deleteTodo = async (targetTodo: TodoType) => {
+    if (!targetTodo) return;
+    const params = { id: targetTodo.id };
+    await fetch("/api/todo_lists", {
+      method: "DELETE",
+      body: JSON.stringify(params),
+    }).then((res) => {
+      if (res.status === 200) {
+        const newCategoryList = categoryList.map((c) => ({
+          ...c,
+          todoLists: c.todoLists.filter((todo) => todo.id !== targetTodo.id),
+        }));
+        setCategoriesList(newCategoryList);
+        setShowingTodoList(undefined);
+      }
+    });
+  };
+
   const MainContent = () => {
     if (isNewTodo) {
       return <TodoForm createTodo={createTodo} />;
@@ -71,12 +90,14 @@ export default function TodoListIndex() {
         <TodoListDetail
           todoList={showingTodoList}
           openEditTodo={(editingTodo) => openEditTodo(editingTodo)}
+          deleteTodo={(todo) => deleteTodo(todo)}
         />
       );
     } else {
       return <></>;
     }
   };
+
   return (
     <div>
       <HeaderComponent openNewTodo={() => setNewTodo(true)} />

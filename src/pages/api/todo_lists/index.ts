@@ -33,5 +33,13 @@ export default async function handler(
       },
     });
     res.status(200).json(newTodo);
+  } else if (req.method === "DELETE") {
+    const params = JSON.parse(req.body);
+    await db.todo.delete({
+      where: {
+        id: Number(params.id),
+      },
+    });
+    res.status(200).json({ response: "ok" });
   }
 }
