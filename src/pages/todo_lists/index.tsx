@@ -6,7 +6,6 @@ import { TodoListDetail } from "components/TodoLists/TodoListDetail";
 import { TodoForm, TodoFormType } from "components/TodoLists/TodoForm";
 import { categoriesState } from "state/TodoState";
 import { useRecoilState } from "recoil";
-import { fetchTodos } from "utils";
 
 export default function TodoListIndex() {
   const [todoLists, setTodoLists] = useState<TodoType[]>([]);
@@ -22,7 +21,6 @@ export default function TodoListIndex() {
   useEffect(() => {
     fetchTodoLists();
     fetchCategories();
-    fetchTodos();
   }, []);
 
   const fetchTodoLists = async () => {
