@@ -23,3 +23,19 @@ export const validateTitle = (title: string): boolean => {
   }
   return true;
 };
+
+export const wait = async (duration: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(duration); // durationがreturnされる
+    }, duration);
+  });
+};
+
+export const timeout = async (duration: number) => {
+  return new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(duration);
+    }, duration);
+  });
+};
