@@ -28,7 +28,6 @@ export default function Home({ allPostsData }: { allPostsData: PostType[] }) {
 
   const fetchTodoList = async () => {
     const todoLists = await fetch("/api/todo_lists").then((res) => res.json());
-    console.log({ todoLists });
   };
   return (
     <Layout>
