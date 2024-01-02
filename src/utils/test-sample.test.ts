@@ -34,3 +34,24 @@ describe("", () => {
     ).toBeFalsy();
   });
 });
+
+describe("数値の検証", () => {
+  test("検証値は期待値と等しい", () => {
+    expect(add(10, 20)).toEqual(30);
+  });
+  test("検証値は期待値より大きい", () => {
+    expect(add(10, 20)).toBeGreaterThan(10);
+  });
+  test("検証値は期待値より小さい", () => {
+    expect(add(10, 20)).toBeLessThan(100);
+  });
+});
+
+describe("検証値が文字列に含まれているか", () => {
+  test("検証値が文字列に含まれているか", () => {
+    expect("こんにちは、世界").toContain("世界");
+  });
+  test("期待値が文字列にマッチしているか", () => {
+    expect("こんにちは世界").toMatch(/世界/);
+  });
+});
