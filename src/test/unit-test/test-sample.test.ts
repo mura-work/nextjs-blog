@@ -1,4 +1,10 @@
-import { add, willSumExceedOneHundred, validateTitle } from "./test-sample";
+import {
+  add,
+  willSumExceedOneHundred,
+  validateTitle,
+  wait,
+  timeout,
+} from "./test-sample";
 
 describe("", () => {
   test("add: 1 + 2 = 3", () => {
@@ -53,5 +59,22 @@ describe("検証値が文字列に含まれているか", () => {
   });
   test("期待値が文字列にマッチしているか", () => {
     expect("こんにちは世界").toMatch(/世界/);
+  });
+});
+
+describe("非同期のテスト", () => {
+  test("指定時間待つと経過時間を持ってresolveされる", () => {
+    return wait(500).then((duration) => expect(duration).toBe(500));
+  });
+  test("指定時間待つと、経過時間を持ってresolveされる", async () => {
+    await expect(wait(500)).resolves.toBe(500);
+  });
+  test("指定時間待つと経過時間を持ってrejectされる", async () => {
+    return timeout(500).catch((duration) => {
+      expect(duration).toBe(500);
+    });
+  });
+  test("指定時間待つと経過時間を持ってrejectされる", async () => {
+    return expect(timeout(500)).rejects.toBe(500);
   });
 });
