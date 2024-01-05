@@ -4,7 +4,9 @@
     "build": "next build",
     "dev": "PORT=3001 next dev",
     "start": "next start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",

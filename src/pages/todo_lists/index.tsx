@@ -6,6 +6,7 @@ import { TodoListDetail } from "components/TodoLists/TodoListDetail";
 import { TodoForm, TodoFormType } from "components/TodoLists/TodoForm";
 import { categoriesState } from "state/TodoState";
 import { useRecoilState } from "recoil";
+import { config } from "../../lib/config";
 
 export default function TodoListIndex() {
   const [todoLists, setTodoLists] = useState<TodoType[]>([]);
@@ -24,14 +25,14 @@ export default function TodoListIndex() {
   }, []);
 
   const fetchTodoLists = async () => {
-    const res: TodoType[] = await fetch("/api/todo_lists").then((res) =>
-      res.json()
-    );
+    const url = config.apiPrefix + config.apiHost + "/api/todo_lists";
+    const res: TodoType[] = await fetch(url).then((res) => res.json());
     setTodoLists(res);
   };
 
   const fetchCategories = async () => {
-    const res = await fetch("/api/categories").then((res) => res.json());
+    const url = config.apiPrefix + config.apiHost + "/api/categories";
+    const res = await fetch(url).then((res) => res.json());
     setCategories(res.categories);
     setCategoriesList(res.categories);
   };
@@ -44,7 +45,8 @@ export default function TodoListIndex() {
       responsibleUserName: todoFormValues.responsibleUserName,
       categories: todoFormValues.categoryIds,
     };
-    const newTodo: TodoType = await fetch("/api/todo_lists", {
+    const url = config.apiPrefix + config.apiHost + "/api/todo_lists";
+    const newTodo: TodoType = await fetch(url, {
       method: "POST",
       body: JSON.stringify(params),
     }).then((res) => res.json());
@@ -137,7 +139,8 @@ export default function TodoListIndex() {
   const deleteTodo = async (targetTodo: TodoType) => {
     if (!targetTodo) return;
     const params = { id: targetTodo.id };
-    await fetch("/api/todo_lists", {
+    const url = config.apiPrefix + config.apiHost + "/api/todo_lists";
+    await fetch(url, {
       method: "DELETE",
       body: JSON.stringify(params),
     }).then((res) => {
@@ -175,7 +178,8 @@ export default function TodoListIndex() {
   };
 
   const openDetailTodoList = async (todo: TodoType) => {
-    const targetTodo: TodoType = await fetch(`/api/todo_lists/${todo.id}`).then(
+    const url = config.apiPrefix + config.apiHost + "/api/todo_lists";
+    const targetTodo: TodoType = await fetch(`${url}/${todo.id}`).then(
       (r) => r.json()
     );
     setShowingTodoList(targetTodo);
