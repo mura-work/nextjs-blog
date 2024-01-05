@@ -5,6 +5,7 @@ import utilStyles from "../styles/utils.module.css";
 import { getSortedPostsData } from "../lib/posts.ts";
 import Link from "next/link";
 import { Date } from "../components/date.tsx";
+import { config } from "../lib/config.ts";
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -27,7 +28,8 @@ export default function Home({ allPostsData }: { allPostsData: PostType[] }) {
   }, []);
 
   const fetchTodoList = async () => {
-    const todoLists = await fetch("/api/todo_lists").then((res) => res.json());
+    const url = config.apiPrefix + config.apiHost + "/api/todo_lists";
+    const todoLists = await fetch(url).then((res) => res.json());
   };
   return (
     <Layout>
